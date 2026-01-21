@@ -1,32 +1,36 @@
 import React from 'react';
 
 interface State {
-  message: string;
+  pressedKey: string;
 }
 
 export class App extends React.Component<{}, State> {
   state: Readonly<State> = {
-    message: 'Nothing was pressed yet',
+    pressedKey: '',
   };
 
-  keyPressHandler = (event: KeyboardEvent) => {
+  keyUpHandler = (event: KeyboardEvent) => {
     this.setState({
-      message: `The last pressed key is [${event.key}]`,
+      pressedKey: event.key,
     });
   };
 
   componentDidMount(): void {
-    document.addEventListener('keyup', this.keyPressHandler);
+    document.addEventListener('keyup', this.keyUpHandler);
   }
 
   componentWillUnmount(): void {
-    document.removeEventListener('keyup', this.keyPressHandler);
+    document.removeEventListener('keyup', this.keyUpHandler);
   }
 
   render() {
     return (
       <div className="App" data-theme="dark">
-        <p className="App__message">{this.state.message}</p>
+        <p className="App__message">
+          {this.state.pressedKey
+            ? `The last pressed key is [${this.state.pressedKey}]`
+            : 'Nothing was pressed yet'}
+        </p>
       </div>
     );
   }
